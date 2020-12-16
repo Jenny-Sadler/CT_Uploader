@@ -1,4 +1,15 @@
-const getUploadURL = async () => {
+const AWS = require("aws-sdk");
+AWS.config.update({region: process.env.REGION || "eu-west-2"})
+const s3 = new AWS.S3();
+
+exports.handler = async (event) => {
+  const result = await getUploadURL(event);
+  console.log("Result : " + result)
+  return result;
+}
+
+const getUploadURL = async (event) => {
+  console.log(event);
   const randomId = parseInt(Math.random() * 10000000)
   const s3Params = {
     Bucket: 'council-tax-upload-ons',
@@ -17,7 +28,8 @@ const getUploadURL = async () => {
          },
       "body": JSON.stringify({
         "uploadURL": uploadURL,
-        "filename": `${randomId}.csv`
+        "filename": `${randomId}.csv`,
+        "event": event
       })
     })
   })
