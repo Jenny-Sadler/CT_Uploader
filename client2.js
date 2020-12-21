@@ -1,4 +1,4 @@
-const url = 'https://p17u5uowm6.execute-api.eu-west-2.amazonaws.com/default/getPreSignedURL';
+const url = 'https://4bnypbtsa2.execute-api.eu-west-2.amazonaws.com/default/getPreSignedURL';
 const options = {
     method: 'GET',
 };
@@ -9,36 +9,56 @@ form.addEventListener("submit", onSubmit);
     
 async function onSubmit(event) {
     event.preventDefault();
-    console.log("clicked")
-    if (form.file.files.length < 1) {
-        alert('select a file please');
+    console.log("clicked!!!!")
+    if (form.fileOne.files.length < 1 || form.fileTwo.files.length < 1) {
+        alert('select both files please');
             return false;
         }
-    const file = form.file.files[0]
+    const fileOne = form.fileOne.files[0];
+    const urlWithFilenameOne = url + `?filename=${fileOne.name}`;
+    console.log(urlWithFilenameOne)
+    const fileTwo = form.fileTwo.files[0];
+    const urlWithFilenameTwo = url + `?filename=${fileTwo.name}`;
+    console.log(urlWithFilenameTwo)
 
-    fetch(url, options)
-        .then(response => response.json())    // one extra step
-        .then(data => {     
-            uploadFile(data.uploadURL, file)
+
+    fetch(urlWithFilenameOne, options)
+        .then(response => response.json())    
+        .then(data => {   
+            console.log(data.uploadURL); 
+            console.log(data.filename)
+            uploadFile(data.uploadURL, fileOne)
                 }).then(data => {
-                            alert('You uploaded' + file.name);
-                            form.reset();
+                            alert('Hooray!You uploaded ' + fileOne.name);
+                            //form.reset();
+            });
+
+    fetch(urlWithFilenameTwo, options)
+        .then(response => response.json())    
+        .then(data => {   
+            console.log(data.uploadURL); 
+            console.log(data.filename)
+            uploadFile(data.uploadURL, fileTwo)
+                }).then(data => {
+                            alert('Hooray!You uploaded ' + fileTwo.name);
+                            //form.reset();
             });
 }
 
 async function uploadFile(uploadURL, file) {
-
+console.log("uploading file " + file.name)
 let uploadResponse = await fetch(uploadURL, {
     method: "PUT",
-    headers: {
-        'Access-Control-Allow-Methods': '*',
-        'Access-Control-Allow-Origin': '*',
-        "Content-Type": "text/csv",
-        'x-amz-acl': 'public-read',
-    },
+    //headers: {
+       // 'Access-Control-Allow-Methods': '*',
+        //'Access-Control-Allow-Origin': '*',
+        //"Content-Type": "text/csv",
+       // 'x-amz-acl': 'public-read',
+    //},
     body: file
         }).then(resp => {
             return resp.text().then(body => {
+                
                 const result = {
                     status: resp.status,
                     body,
@@ -47,7 +67,7 @@ let uploadResponse = await fetch(uploadURL, {
                 if (!resp.ok) {
                     return Promise.reject(result);
                 }
-
+                console.log(result);
                 return result;
              });
         });
@@ -57,5 +77,10 @@ let uploadResponse = await fetch(uploadURL, {
      
     
 (window);
+    
+     
+
+
+
     
     
