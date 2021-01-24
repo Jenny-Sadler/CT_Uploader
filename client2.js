@@ -3,7 +3,7 @@ const url = 'https://4bnypbtsa2.execute-api.eu-west-2.amazonaws.com/default/getP
 
 const options = {
     method: 'GET',
-}; //APIO Gateway will be called with GET method
+}; //API Gateway will be called with GET method
     
 let form = document.getElementById("form");
 form.addEventListener("submit", onSubmit);
