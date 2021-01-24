@@ -7,13 +7,28 @@
 </head>
 <body>
     <div class="container">
+        <br>
         <h1>Council Tax File Uploader</h1>
+        <br>
         <form id="form">
+            <fieldset>
+                <select name="lad" id="lad" >
+                    <option>Select your Local Authority</option>
+                    <option value="012345678">Vale of Glamorgan : 012345678</option>
+                    <option value="876543210">Caerphilly County Borough: 87654321</option>
+                </select>
+                
+            </fieldset>
+            <br>
+            
             <div class="form-group">
                 <input name="fileOne" type="file" accept="text/plain" />
+                <label>File must be named with the format "CTAX_EXTRACT_012345678_yyyymmdd" where the 8 digits are your LAD code and yyyymmdd is the data run date
+                </label>
             </div>
             <div class="form-group">
                 <input name="fileTwo" type="file" accept="text/plain" />
+                <label>File must be named with the format "CTAX_MANI_012345678_yyyymmdd" where the 8 digit code are your LAD code and  yyyymmdd is the data run date
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
